@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import org.ippon.models.RickAndMortyCharacter
+import org.ippon.rickandmorty.models.RickAndMortyCharacter
 import org.ippon.rickandmorty.android.databinding.FragmentCharacterBinding
 
 class CharactersRecyclerViewAdapter(

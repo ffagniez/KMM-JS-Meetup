@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import org.ippon.models.RickAndMortyCharacter
+import org.ippon.rickandmorty.models.RickAndMortyCharacter
 import org.ippon.rickandmorty.android.databinding.ActivityMainBinding
-import org.ippon.service.models.Response
-import org.ippon.viewmodels.CharactersViewModel
+import org.ippon.rickandmorty.service.models.Response
+import org.ippon.rickandmorty.viewmodels.CharactersViewModel
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null

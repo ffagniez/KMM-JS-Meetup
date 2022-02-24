@@ -26,10 +26,6 @@ struct ContentView: View {
             CharactersList(characters: characters)
         }
 	}
-
-    func onResult(result:Response<NSArray>) {
-
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {
