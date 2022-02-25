@@ -1,35 +1,66 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { viewmodels, service, models } from "rickandmorty";
 import "./App.css";
+import Character from "./Character";
 
 function App() {
-  const [people, setPeople] = useState<[models.RickAndMortyCharacter?]>([]);
+  const [people, setPeople] = useState([]);
+  const [firstPageReached, setFirstPageReached] = useState(false);
+  const [bottomReached, setBottomReached] = useState(false);
 
-  const onResult = useCallback((result: service.models.Response<[models.RickAndMortyCharacter]>) => {
-    console.log(service.models);
-    if(result instanceof service.models.Response.Loading){
-      console.log("Loading");
-    } else if (result instanceof service.models.Response.Success){
-      console.log("Success");
-      setPeople(result.result.array_hd7ov6$_0)
-    } else if (result instanceof service.models.Response.CustomError){
-      console?.log("Erreur")
+  const listInnerRef = useRef(null);
+
+  const onResult = useCallback(
+    (result: service.models.Response<[models.RickAndMortyCharacter]>) => {
+      console.log(service.models);
+      if (result instanceof service.models.Response.Loading) {
+        console.log("Loading");
+      } else if (result instanceof service.models.Response.Success) {
+        console.log("Success");
+        const myResult = people.concat(result.result.array_hd7ov6$_0);
+        setPeople(myResult);
+      } else if (result instanceof service.models.Response.CustomError) {
+        console?.log("Erreur");
+      }
+    },
+    [people]
+  );
+
+  const onScroll = () => {
+    if (listInnerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+      setBottomReached(false);
+      if (scrollTop + clientHeight === scrollHeight) {
+        setBottomReached(true);
+      }
     }
-
-  }, []);
+  };
 
   useEffect(() => {
-    const viewmodel = new viewmodels.CharactersViewModel(onResult);
-    viewmodel.getFirstPage();
-  }, [onResult]);
-
+    const viewModel = new viewmodels.CharactersViewModel(onResult);
+    if (!firstPageReached) {
+      viewModel.getFirstPage();
+      setFirstPageReached(true);
+    }
+    if (bottomReached) {
+      viewModel.getMoreCharacters();
+    }
+  }, [onResult, bottomReached, firstPageReached]);
 
   return (
-    <div>
-      {people.map((person) => (
-        <p>{person?.name}</p>
-      ))}
-      {/* <p>{`Coucou ${new Platform().platform}`}</p> */}
+    <div className="flex flex-col align-center justify-center">
+      <div className="container mx-auto px-10 justify-center">
+        <div
+          className="flex flex-wrap"
+          onScroll={onScroll}
+          ref={listInnerRef}
+          style={{ height: "1000px", overflowY: "auto" }}
+        >
+          {people.map((person, index) => (
+            <Character key={index} character={person} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

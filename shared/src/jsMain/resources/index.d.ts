@@ -60,11 +60,13 @@ declare module "rickandmorty" {
 
         export class Gender {
           constructor(value: String);
+          value: String;
           safeValueOf(value: String): Gender;
         }
 
         export class Status {
           constructor(value: String);
+          value: String;
           safeValueOf(value: String): Status;
         }
     }
