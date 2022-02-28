@@ -2,34 +2,30 @@ import SwiftUI
 import shared
 
 struct ContentView: View {
+    @StateObject var viewModel: MyCharactersViewModel
 
-    var viewModel: CharactersViewModel
-
-    @State var characters: [RickAndMortyCharacter] = NSArray() as! [RickAndMortyCharacter]
-
-    func load() {
-        viewModel.getFirstPage()
-    }
-
-    init() {
-        viewModel = CharactersViewModel() { result in
-
-        }
-    }
-
-	var body: some View {
-        if(characters.count == 0) {
-            Text("Loading").onAppear() {
-                load()
+    var body: some View {
+        VStack {
+            switch viewModel.state {
+            case .loading, .idle:
+                Text("Loading")
+            case .ready:
+                CharactersList(characters: $viewModel.fetchedCharacters) {
+                    viewModel.getMoreCharacters()
+                }
+            case .error(let error):
+                Text(error.localizedDescription)
             }
-        } else {
-            CharactersList(characters: characters)
         }
-	}
+        .onAppear {
+            viewModel.initialize()
+            viewModel.getFirstPage()
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
-	static var previews: some View {
-        ContentView()
-	}
+    static var previews: some View {
+        ContentView(viewModel: MyCharactersViewModel())
+    }
 }
