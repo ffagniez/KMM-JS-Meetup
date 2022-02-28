@@ -7,13 +7,9 @@ import org.ippon.rickandmorty.service.models.Response
 import kotlin.js.JsExport
 
 @JsExport
-class CharactersViewModel(val getResult: (result: Response<List<RickAndMortyCharacter>>) -> Unit) :
-    ServiceCaller() {
+open class CharactersViewModel : ServiceCaller() {
     var currentPage = 1
-
-    init {
-        getResult(Response.Loading())
-    }
+    var onResult: ((Response<List<RickAndMortyCharacter>>) -> Unit)? = null
 
     @Name("getFirstPage")
     fun getFirstPage() {
@@ -23,8 +19,8 @@ class CharactersViewModel(val getResult: (result: Response<List<RickAndMortyChar
 
     @Name("getMoreCharacters")
     fun getMoreCharacters() = callInCoroutineScope {
-        getResult(Response.Loading())
-        getResult(service.getCharacters(currentPage))
+        onResult?.invoke(Response.Loading())
+        onResult?.invoke(service.getCharacters(currentPage))
         currentPage += 1
     }
 }

@@ -10,17 +10,27 @@ import SwiftUI
 import shared
 
 struct CharactersList: View {
-    var characters: [RickAndMortyCharacter]
+    @Binding var characters: [RickAndMortyCharacter]
+    var onReachBottom: () -> Void
 
     var body: some View {
-        List(characters, id: \.id) { character in
-            CharacterRow(character: character)
+        ScrollView {
+            LazyVStack {
+                ForEach(characters.indices, id: \.self) { index in
+                    CharacterRow(character: characters[index])
+                        .onAppear {
+                            if index == characters.indices.last {
+                                onReachBottom()
+                            }
+                        }
+                }
+            }
         }
     }
 }
 
 struct CharactersList_Previews: PreviewProvider {
     static var previews: some View {
-        CharactersList(characters :[])
+        CharactersList(characters: .constant([])) {}
     }
 }

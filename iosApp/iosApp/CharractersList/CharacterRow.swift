@@ -14,11 +14,11 @@ struct CharacterRow: View {
     var character: RickAndMortyCharacter
 
     var body: some View {
-        HStack {
+        VStack {
             AsyncImage(url: URL(string: character.image))
+                .aspectRatio(1, contentMode: .fill)
             Text(character.name)
             Text("\(character.status)")
-            Spacer()
         }
     }
 }

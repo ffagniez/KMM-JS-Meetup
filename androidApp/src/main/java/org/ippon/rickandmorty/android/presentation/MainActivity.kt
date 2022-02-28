@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel = CharactersViewModel(onResult)
+        val viewModel = CharactersViewModel()
+        viewModel.onResult = onResult
         with(binding.charactersList) {
             hasFixedSize()
             layoutManager = LinearLayoutManager(context)
