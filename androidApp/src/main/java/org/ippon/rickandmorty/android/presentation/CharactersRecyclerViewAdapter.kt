@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import org.ippon.rickandmorty.android.R
 import org.ippon.rickandmorty.models.RickAndMortyCharacter
 import org.ippon.rickandmorty.android.databinding.FragmentCharacterBinding
 
@@ -28,11 +29,6 @@ class CharactersRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
-    fun setItems(values: List<RickAndMortyCharacter>) {
-        this.values = values
-        notifyDataSetChanged()
-    }
-
     inner class CharacterViewHolder(private val binding: FragmentCharacterBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -44,7 +40,7 @@ class CharactersRecyclerViewAdapter(
                     .into(characterImage)
 
                 characterName.text = character.name
-                characterSpeciesAndStatus.text = "${character.status} - ${character.species}"
+                characterSpeciesAndStatus.text = itemView.resources.getString(R.string.species_and_status, character.status, character.species)
             }
         }
     }

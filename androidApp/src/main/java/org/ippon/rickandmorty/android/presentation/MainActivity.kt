@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.ippon.rickandmorty.android.R
 import org.ippon.rickandmorty.models.RickAndMortyCharacter
 import org.ippon.rickandmorty.android.databinding.ActivityMainBinding
 import org.ippon.rickandmorty.service.models.Response
@@ -16,31 +17,21 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
-    private val mainScope = MainScope()
+    private val viewModel = MyCharactersViewModel()
     private val myAdapter = CharactersRecyclerViewAdapter(listOf())
-
-    private val onResult = fun(result: Response<List<RickAndMortyCharacter>>) {
-        mainScope.launch {
-            when (result) {
-                is Response.Loading -> binding.textView.text = "Loading..."
-                is Response.CustomError -> binding.textView.text = "Error: ${result.error.localizedMessage}"
-                is Response.Success -> {
-                    binding.textView.visibility = View.INVISIBLE
-                    myAdapter.addItems(result.result)
-                }
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel = CharactersViewModel()
-        viewModel.onResult = onResult
+
+        initRecyclerView()
+        viewModel.getFirstPage()
+    }
+
+    private fun initRecyclerView() {
         with(binding.charactersList) {
-            hasFixedSize()
             layoutManager = LinearLayoutManager(context)
             adapter = myAdapter
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -52,7 +43,33 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
-        myAdapter.setItems(emptyList())
-        viewModel.getFirstPage()
+
+        viewModel.characters.observe(this, { characters ->
+            when(characters) {
+                is Response.Loading -> {
+                    displayLoading()
+                }
+                is Response.Success -> {
+                    displaySuccess(characters.result)
+                }
+                is Response.CustomError -> {
+                    displayError(characters.error)
+                }
+            }
+        })
+    }
+
+    private fun displayError(error: Throwable) {
+        binding.textView.text = getString(R.string.error, error.message)
+    }
+
+    private fun displaySuccess(characters: List<RickAndMortyCharacter>) {
+        binding.textView.visibility = View.INVISIBLE
+        binding.charactersList.visibility = View.VISIBLE
+        myAdapter.addItems(characters)
+    }
+
+    private fun displayLoading() {
+        binding.textView.text = getString(R.string.loading)
     }
 }

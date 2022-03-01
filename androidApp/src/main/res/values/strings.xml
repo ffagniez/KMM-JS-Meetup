@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error">Error : %1$s</string>
+    <string name="loading">Loading …</string>
+    <string name="species_and_status">%1$s - %2$s</string>
+</resources>
