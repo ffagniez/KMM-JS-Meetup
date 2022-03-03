@@ -15,16 +15,16 @@ class MyCharactersViewModel : ViewModel() {
         }
     private val _characters = MutableLiveData<Response<List<RickAndMortyCharacter>>>()
     private val charactersViewModel: CharactersViewModel = CharactersViewModel()
-    private val onResult = fun(result: Response<List<RickAndMortyCharacter>>) {
-       displaySuccess(result)
+    private val onResult = fun(response: Response<List<RickAndMortyCharacter>>) {
+       displaySuccess(response)
     }
 
     init {
         charactersViewModel.onResult = onResult
     }
 
-    private fun displaySuccess(result: Response<List<RickAndMortyCharacter>>) {
-        _characters.postValue(result)
+    private fun displaySuccess(response: Response<List<RickAndMortyCharacter>>) {
+        _characters.postValue(response)
     }
 
     fun getFirstPage() {

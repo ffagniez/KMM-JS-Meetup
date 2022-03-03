@@ -2,6 +2,7 @@ package org.ippon.rickandmorty.android.presentation
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,14 +18,13 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel = MyCharactersViewModel()
+    private val viewModel: MyCharactersViewModel by viewModels()
     private val myAdapter = CharactersRecyclerViewAdapter(listOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         initRecyclerView()
         viewModel.getFirstPage()

@@ -12,15 +12,14 @@ function App() {
   );
 
   const onResult = useCallback(
-    (result: service.models.Response<[models.RickAndMortyCharacter]>) => {
-      if (result instanceof service.models.Response.Loading) {
-        console.log("Loading");
-      } else if (result instanceof service.models.Response.Success) {
-        console.log("Success");
-        const myResult = people.concat(result.result.array_hd7ov6$_0);
+    (response: service.models.Response<[models.RickAndMortyCharacter]>) => {
+      if (response instanceof service.models.Response.Loading) {
+        displayLoading();
+      } else if (response instanceof service.models.Response.Success) {
+        const myResult = people.concat(response.result.array_hd7ov6$_0);
         setPeople(myResult);
-      } else if (result instanceof service.models.Response.CustomError) {
-        console?.log("Erreur");
+      } else if (response instanceof service.models.Response.CustomError) {
+        displayError();
       }
     },
     [people]
@@ -68,10 +67,7 @@ function App() {
   return (
     <div className="flex flex-col align-center justify-center">
       <div className="container mx-auto px-10 justify-center">
-        <div
-          className="flex flex-wrap"
-          style={{ height: "1000px", overflowY: "auto" }}
-        >
+        <div className="flex flex-wrap">
           {people.map((person, index) => (
             <Character key={index} character={person} />
           ))}
@@ -83,3 +79,10 @@ function App() {
 }
 
 export default App;
+function displayError() {
+  console.log("Error");
+}
+
+function displayLoading() {
+  console.log("Loading");
+}

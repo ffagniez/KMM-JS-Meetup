@@ -37,7 +37,6 @@ kotlin {
 
     sourceSets {
         val ktor_version = "1.6.4"
-
         val commonMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-core:$ktor_version")

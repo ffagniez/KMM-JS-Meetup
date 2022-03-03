@@ -6,7 +6,7 @@ import org.ippon.rickandmorty.service.ServiceCaller
 import org.ippon.rickandmorty.service.models.Response
 import kotlin.js.JsExport
 
-@JsExport
+
 open class CharactersViewModel : ServiceCaller() {
     var currentPage = 1
     var onResult: ((Response<List<RickAndMortyCharacter>>) -> Unit)? = null

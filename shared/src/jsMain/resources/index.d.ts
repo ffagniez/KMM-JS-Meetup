@@ -6,7 +6,7 @@ declare module "rickandmorty" {
   export namespace viewmodels {
     export class CharactersViewModel {
       onResult: (
-        result: service.models.Response<ArrayList<models.RickAndMortyCharacter>>
+        response: service.models.Response<ArrayList<models.RickAndMortyCharacter>>
       ) => void;
       getFirstPage(): void;
       getMoreCharacters(): void;
