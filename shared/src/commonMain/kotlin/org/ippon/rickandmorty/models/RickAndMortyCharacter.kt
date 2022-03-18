@@ -1,6 +1,6 @@
 package org.ippon.rickandmorty.models
 
-import org.ippon.rickandmorty.network.RickAndMortyCharacterREST
+import org.ippon.rickandmorty.network.models.RickAndMortyCharacterREST
 
 data class RickAndMortyCharacter(
     val id: Int,

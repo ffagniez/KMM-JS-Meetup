@@ -12,11 +12,7 @@ declare module "rickandmorty" {
       getMoreCharacters(): void;
     }
   }
-
-  export class Platform {
-    platform: string;
-  }
-
+  
   export namespace service {
     export namespace models {
       export class Response<T> {}
@@ -54,8 +50,6 @@ declare module "rickandmorty" {
       origin: string;
       location: string;
       image: string;
-
-      from(character: network.RickAndMortyCharacterREST): RickAndMortyCharacter;
     }
 
     export class Gender {
@@ -69,9 +63,5 @@ declare module "rickandmorty" {
       value: String;
       safeValueOf(value: String): Status;
     }
-  }
-
-  export namespace network {
-    export class RickAndMortyCharacterREST {}
   }
 }

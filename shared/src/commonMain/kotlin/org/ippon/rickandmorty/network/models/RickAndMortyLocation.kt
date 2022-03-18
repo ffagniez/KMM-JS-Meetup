@@ -1,4 +1,4 @@
-package org.ippon.rickandmorty.network
+package org.ippon.rickandmorty.network.models
 
 import kotlinx.serialization.Serializable
 
